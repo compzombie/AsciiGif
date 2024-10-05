@@ -35,6 +35,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+    // Drop zone event listener to open file from a copied link on click
+  dropZone.addEventListener('click', async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      if (text && text.startsWith('http') && text.endsWith('.gif')) {
+        const response = await fetch(text, { mode: 'no-cors' });
+        if (!response.ok) {
+          throw new Error('Failed to fetch the GIF from the URL.');
+        }
+        const blob = await response.blob();
+        if (blob.type.startsWith('image/gif')) {
+          handleFile(blob); // Call function to handle GIF file from the URL
+        } else {
+          alert('The copied link does not contain a valid GIF file.');
+        }
+      } else {
+        alert('No valid GIF link found in the clipboard. Please copy a valid GIF URL.');
+      }
+    } catch (error) {
+      console.error('Failed to read clipboard contents or fetch the GIF:', error);
+    }
+  });
+
   // Function to handle the dropped GIF file
   // This function parses the GIF, decompresses frames, and converts them to ASCII
   async function handleFile(file) {
