@@ -27,6 +27,7 @@
             line-height: 8px;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/gifuct-js/dist/gifuct.min.js"></script>
 </head>
 <body>
     <div id="drop-zone">Drag and drop a GIF here</div>
@@ -56,24 +57,41 @@
             }
         });
 
-        // Convert image to ASCII
-        function handleFile(file) {
+        // Convert GIF to ASCII
+        async function handleFile(file) {
             const reader = new FileReader();
-            reader.onload = function (event) {
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = function () {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    canvas.width = 100; // Resize to reduce complexity
-                    canvas.height = (img.height / img.width) * 100;
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                    const ascii = imageToAscii(imageData);
-                    asciiOutput.textContent = ascii;
-                };
+            reader.onload = async function (event) {
+                const buffer = event.target.result;
+                const gif = gifuct.parseGIF(buffer);
+                const frames = gifuct.decompressFrames(gif, true);
+                let ascii = "";
+                for (let i = 0; i < frames.length; i++) {
+                    ascii += `Frame ${i + 1}:\n`;
+                    ascii += await frameToAscii(frames[i]);
+                    ascii += "\n\n";
+                }
+                asciiOutput.textContent = ascii;
             };
-            reader.readAsDataURL(file);
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Convert individual frame to ASCII
+        function frameToAscii(frame) {
+            return new Promise((resolve) => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = frame.dims.width;
+                canvas.height = frame.dims.height;
+                const imageData = new ImageData(new Uint8ClampedArray(frame.patch), frame.dims.width, frame.dims.height);
+                ctx.putImageData(imageData, 0, 0);
+                const scaledCanvas = document.createElement('canvas');
+                const scaledCtx = scaledCanvas.getContext('2d');
+                scaledCanvas.width = 100; // Resize for simplicity
+                scaledCanvas.height = (canvas.height / canvas.width) * 100;
+                scaledCtx.drawImage(canvas, 0, 0, scaledCanvas.width, scaledCanvas.height);
+                const scaledImageData = scaledCtx.getImageData(0, 0, scaledCanvas.width, scaledCanvas.height);
+                resolve(imageToAscii(scaledImageData));
+            });
         }
 
         // Convert image data to ASCII text
