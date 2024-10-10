@@ -2,8 +2,9 @@
 
 import { parseGIF, decompressFrames } from 'gifuct-js';
 
+import { playAsciiGif } from './playAsciiGif';
 
-export async function handleFile(file, playAsciiGif) {
+export async function handleFile(file) {
     try {
       const arrayBuffer = await file.arrayBuffer(); // Read the file as an ArrayBuffer
       

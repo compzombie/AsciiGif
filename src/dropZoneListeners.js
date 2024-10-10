@@ -1,4 +1,6 @@
-export function dropZoneListeners(dropZone, handleFile, playAsciiGif) {
+import { handleFile } from './handleFile';
+
+export function dropZoneListeners(dropZone) {
 
     // Drop zone event listener to change styling when a file is dragged over it
     dropZone.addEventListener('dragover', (event) => {
@@ -18,7 +20,8 @@ export function dropZoneListeners(dropZone, handleFile, playAsciiGif) {
     const file = event.dataTransfer.files[0]; // Get the dropped file
     // Check if the dropped file is a GIF
     if (file && file.type.startsWith('image/gif')) {
-        handleFile(file, playAsciiGif); // Call function to handle GIF file
+        handleFile(file); // Call function to handle GIF file
+        dropZone.style.visibility = "hidden";
     } else {
         alert('Please drop a GIF file.'); // Alert if file is not a GIF
     }
