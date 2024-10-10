@@ -1,0 +1,21 @@
+body {
+    font-family: monospace;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #282c34;
+    color: #61dafb;
+}
+#drop-zone {
+    border: 2px dashed #61dafb;
+    padding: 50px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+#ascii-output {
+    white-space: pre;
+    font-size: 8px;
+    line-height: 8px;
+}
