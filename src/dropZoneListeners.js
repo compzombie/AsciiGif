@@ -26,47 +26,32 @@ export function dropZoneListeners(dropZone) {
         }
     });
 
-    // Function to handle reading GIF link from clipboard
-    async function handleClipboard() {
-        try {
-            const text = await navigator.clipboard.readText();
-            if (text && text.endsWith('.gif')) {
-                const corsProxy = 'https://proxy.cors.sh/';
-                const decodedUrl = decodeURIComponent(text);
-                const proxyUrl = corsProxy + decodedUrl;
-                console.log('Proxy URL:', proxyUrl); // Log the proxy URL
-                const response = await fetch(proxyUrl, {
-                    headers: {
-                        'x-cors-api-key': 'temp_da804e6fb5ac5913bf292de60827499f'
-                    }
-                });
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const blob = await response.blob();
-                if (blob.type.startsWith('image/gif')) {
-                    handleFile(blob);
-                    dropZone.style.visibility = "hidden";
-                } else {
-                    alert('Clipboard does not contain a valid GIF link.');
-                }
+    // Function to handle file selection from file picker
+    async function handleFilePicker() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/gif';
+        input.onchange = (event) => {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/gif')) {
+                handleFile(file); // Call function to handle GIF file
+                dropZone.style.visibility = "hidden";
+            } else {
+                alert('Please select a GIF file.'); // Alert if file is not a GIF
             }
-        } catch (error) {
-            console.error('Error reading from clipboard:', error);
-        }
+        };
+        input.click();
     }
 
-    // Event listener to handle click on drop zone to read GIF link from clipboard
+    // Event listener to handle click on drop zone to open file picker
     dropZone.addEventListener('click', (event) => {
-        alert("click");
         event.preventDefault(); // Prevent default behavior
-        handleClipboard();
+        handleFilePicker();
     });
 
-    // Event listener to handle touch on drop zone to read GIF link from clipboard
+    // Event listener to handle touch on drop zone to open file picker
     dropZone.addEventListener('touchend', (event) => {
         event.preventDefault(); // Prevent default behavior
-        alert("touch end");
-        handleClipboard();
+        handleFilePicker();
     });
 }
