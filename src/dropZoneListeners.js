@@ -58,14 +58,15 @@ export function dropZoneListeners(dropZone) {
 
     // Event listener to handle click on drop zone to read GIF link from clipboard
     dropZone.addEventListener('click', (event) => {
+        event.preventDefault(); // Prevent default behavior
         alert("click");
         handleClipboard();
     });
 
     // Event listener to handle touch on drop zone to read GIF link from clipboard
     dropZone.addEventListener('touchend', (event) => {
+        event.preventDefault(); // Prevent default behavior
         alert("touch end");
-        event.preventDefault();
         handleClipboard();
     });
 }
