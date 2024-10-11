@@ -26,8 +26,8 @@ export function dropZoneListeners(dropZone) {
         }
     });
 
-    // Event listener to handle click on drop zone to read GIF link from clipboard
-    dropZone.addEventListener('click', async () => {
+    // Function to handle reading GIF link from clipboard
+    async function handleClipboard() {
         try {
             const text = await navigator.clipboard.readText();
             if (text && text.endsWith('.gif')) {
@@ -54,5 +54,14 @@ export function dropZoneListeners(dropZone) {
         } catch (error) {
             console.error('Error reading from clipboard:', error);
         }
+    }
+
+    // Event listener to handle click on drop zone to read GIF link from clipboard
+    dropZone.addEventListener('click', handleClipboard);
+
+    // Event listener to handle touch on drop zone to read GIF link from clipboard
+    dropZone.addEventListener('touchend', (event) => {
+        event.preventDefault();
+        handleClipboard();
     });
 }
