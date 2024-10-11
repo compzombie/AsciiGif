@@ -61,6 +61,7 @@ export function dropZoneListeners(dropZone) {
 
     // Event listener to handle touch on drop zone to read GIF link from clipboard
     dropZone.addEventListener('touchend', (event) => {
+        alert("touch end");
         event.preventDefault();
         handleClipboard();
     });
