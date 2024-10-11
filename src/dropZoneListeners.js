@@ -1,33 +1,6 @@
 import { handleFile } from './handleFile';
 
 export function dropZoneListeners(dropZone) {
-
-    // Create a hidden file input element
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.style.display = 'none';
-    document.body.appendChild(fileInput);
-
-    // Function to trigger file input click
-    const triggerFileInput = () => {
-        fileInput.click();
-    };
-
-    // Event listener to open file picker when drop zone is clicked
-    dropZone.addEventListener('click', triggerFileInput);
-
-    // Event listener to open file picker when drop zone is touched (for mobile)
-    dropZone.addEventListener('touchend', triggerFileInput);
-
-    // Event listener to handle file selection from file picker
-    fileInput.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (file && file.type.startsWith('image/gif')) {
-            handleFile(file);
-            dropZone.style.visibility = "hidden";
-        }
-    });
-
     // Drop zone event listener to change styling when a file is dragged over it
     dropZone.addEventListener('dragover', (event) => {
         event.preventDefault(); // Prevent default behavior to allow drop
