@@ -8,10 +8,16 @@ export function dropZoneListeners(dropZone) {
     fileInput.style.display = 'none';
     document.body.appendChild(fileInput);
 
-    // Event listener to open file picker when drop zone is clicked
-    dropZone.addEventListener('click', () => {
+    // Function to trigger file input click
+    const triggerFileInput = () => {
         fileInput.click();
-    });
+    };
+
+    // Event listener to open file picker when drop zone is clicked
+    dropZone.addEventListener('click', triggerFileInput);
+
+    // Event listener to open file picker when drop zone is touched (for mobile)
+    dropZone.addEventListener('touchend', triggerFileInput);
 
     // Event listener to handle file selection from file picker
     fileInput.addEventListener('change', (event) => {
