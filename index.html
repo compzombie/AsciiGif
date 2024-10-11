@@ -7,10 +7,16 @@
   <title>GIF to ASCII Converter</title>
 </head>
 <body>
-  <div id="drop-zone">Drop or click to paste a GIF</div>
+  <div id="drop-zone" onclick="openFilePicker()">Drop or click to paste a GIF</div>
   <div id="ascii-output"></div>
 
-  <!-- Reference the Webpack bundle instead of the original JavaScript -->
-  <script src="dist/bundle.js"></script>
+  <script type="module">
+    import { dropZoneListeners, openFilePicker } from './src/dropZoneListeners.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const dropZone = document.getElementById('drop-zone');
+      dropZoneListeners(dropZone);
+    });
+  </script>
 </body>
 </html>
