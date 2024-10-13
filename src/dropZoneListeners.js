@@ -25,33 +25,4 @@ export function dropZoneListeners(dropZone) {
             alert('Please drop a GIF file.'); // Alert if file is not a GIF
         }
     });
-
-    // Function to handle file selection from file picker
-    async function handleFilePicker() {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/gif';
-        input.onchange = (event) => {
-            const file = event.target.files[0];
-            if (file && file.type.startsWith('image/gif')) {
-                handleFile(file); // Call function to handle GIF file
-                dropZone.style.visibility = "hidden";
-            } else {
-                alert('Please select a GIF file.'); // Alert if file is not a GIF
-            }
-        };
-        input.click();
-    }
-
-    // Event listener to handle click on drop zone to open file picker
-    dropZone.addEventListener('click', (event) => {
-        event.preventDefault(); // Prevent default behavior
-        handleFilePicker();
-    });
-
-    // Event listener to handle touch on drop zone to open file picker
-    dropZone.addEventListener('touchend', (event) => {
-        event.preventDefault(); // Prevent default behavior
-        handleFilePicker();
-    });
 }

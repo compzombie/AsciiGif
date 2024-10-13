@@ -7,11 +7,11 @@
   <title>GIF to ASCII Converter</title>
 </head>
 <body>
-  <div id="drop-zone" onclick="openFilePicker()">Drop or click to paste a GIF</div>
+  <div id="drop-zone">Drop a GIF here</div>
   <div id="ascii-output"></div>
 
   <script type="module">
-    import { dropZoneListeners, openFilePicker } from './src/dropZoneListeners.js';
+    import { dropZoneListeners } from './src/dropZoneListeners.js';
 
     document.addEventListener('DOMContentLoaded', () => {
       const dropZone = document.getElementById('drop-zone');
